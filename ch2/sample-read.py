@@ -21,5 +21,7 @@ print(result)
 
 text = "Hello, world. Is this-- a test?"
 result = re.split(r'([,.:;?_!"()\']|--|\s)', text)
-print(result)
 # ['Hello', ',', '', ' ', 'world', '.', '', ' ', 'Is', ' ', 'this', '--', '', ' ', 'a', ' ', 'test', '?', '']
+result = [item.strip() for item in result if item.strip()]
+print(result)
+# ['Hello', ',', 'world', '.', 'Is', 'this', '--', 'a', 'test', '?']
