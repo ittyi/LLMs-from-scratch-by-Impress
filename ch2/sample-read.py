@@ -10,3 +10,7 @@ text = "Hello, world. This is a test"
 result = re.split(r'(\s)', text)
 print(result)
 # ['Hello,', ' ', 'world.', ' ', 'This', ' ', 'is', ' ', 'a', ' ', 'test']
+
+result = re.split(r'([,.]|\s)', text)
+print(result)
+# ['Hello', ',', '', ' ', 'world', '.', '', ' ', 'This', ' ', 'is', ' ', 'a', ' ', 'test']
