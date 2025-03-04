@@ -35,3 +35,9 @@ print(preprocessed[:30])
 # 'a', 'cheap', 'genius', '--', 'though', 'a', 'good', 'fellow', 
 # 'enough', '--', 'so', 'it', 'was', 'no', 'great', 'surprise', 
 # 'to', 'me', 'to', 'hear', 'that', ',', 'in']
+
+# 2.3 トークンをトークンIDに変換する
+all_word = sorted(set(preprocessed))
+vocab_size = len(all_word)
+print(vocab_size)
+# 1130
