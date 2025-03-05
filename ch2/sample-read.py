@@ -199,3 +199,42 @@ import tiktoken
 print("tiktoken version:", version("tiktoken"))
 # tiktoken version: 0.9.0
 
+tokenizer = tiktoken.get_encoding("gpt2")
+
+text = (
+    "Hello, do you like tea? <endoftext> In the sunlit terraces"
+    "of someunknownPlace"
+)
+integers = tokenizer.encode(text, allowed_special={"<[endoftext]>"})
+print(integers)
+# [15496, 11, 466, 345, 588, 8887, 30, 1279, 437, 1659, 5239, 29, 554, 262, 4252, 18250, 8812, 2114, 1659, 617, 34680, 27271]
+
+strings = tokenizer.decode(integers)
+print(strings)
+# Hello, do you like tea? <endoftext> In the sunlit terracesof someunknownPlace
+
+with open("the-verdict.txt", "r", encoding="utf-8") as f:
+    raw_text = f.read()
+
+enc_text = tokenizer.encode(raw_text)
+print(len(enc_text))
+# 5145
+
+enc_sample = enc_text[50:]
+
+context_size = 4
+x = enc_sample[:context_size]
+y = enc_sample[1:context_size+1]
+print(f"x: {x}")
+print(f"y:      {y}")
+# x: [290, 4920, 2241, 287]
+# y:      [4920, 2241, 287, 257]
+
+for i in range(1, context_size+1):
+    context = enc_sample[:i]
+    desired = enc_sample[i]
+    print(context, "---->", desired)
+# [290] ----> 4920
+# [290, 4920] ----> 2241
+# [290, 4920, 2241] ----> 287
+# [290, 4920, 2241, 287] ----> 257
