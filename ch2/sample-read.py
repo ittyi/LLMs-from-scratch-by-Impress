@@ -45,9 +45,10 @@ print(vocab_size)
 vocab = {token: integer for integer, token in enumerate(all_word)}
 
 for i, item in enumerate(vocab.items()):
-        print(item)
-        if i >= 50:
-            break
+    print(item)
+    if i >= 10:
+        break
+# i >= 50: の時↓
 # ('!', 0)
 # ('"', 1)
 # ("'", 2)
@@ -99,3 +100,41 @@ for i, item in enumerate(vocab.items()):
 # ('He', 48)
 # ('Her', 49)
 # ('Hermia', 50)
+
+# シンプルなテキストトークナイザ
+class SimpleTokenizerV1:
+    def __init__(self, vocab):
+        self.str_to_int = vocab# encode, decode メソッドでアクセスできるように語彙をクラス属性として格納
+        self.int_to_str = {i:s for s,i in vocab.items()}# トークンIDを元のテキストトークンにマッピングする逆引き語彙を作成
+    
+    # 入力テキストをトークンIDに変換
+    def encode(self, text):
+        preprocessed = re.split('([,.:;?_!"()\']|--|\s)', text)
+        preprocessed = [
+            item.strip() for item in preprocessed if item.strip()
+        ]
+        ids = [self.str_to_int[s] for s in preprocessed]
+        return ids
+    
+    # トークンを変換してテキストに戻す
+    def decode(self, ids):
+        text = " ".join([self.int_to_str[i] for i in ids])
+        text = re.sub(r'\s+([,.?!"()\'])', r'\1', text)# 指定された句読点の前にあるスペースを削除
+        return text
+
+tokenizer = SimpleTokenizerV1(vocab)
+text = """"It's the last he painted, you know,"
+           Mrs. Gisburn said with pardonable pride."""
+ids = tokenizer.encode(text)
+print(ids)
+# painted. の場合 [1, 56, 2, 850, 988, 602, 533, 746, 7, 1126, 596, 5, 1, 67, 7, 38, 851, 1108, 754, 793, 7]
+# painted, の場合 [1, 56, 2, 850, 988, 602, 533, 746, 5, 1126, 596, 5, 1, 67, 7, 38, 851, 1108, 754, 793, 7]
+
+print(tokenizer.decode(ids))
+# " It' s the last he painted, you know," Mrs. Gisburn said with pardonable pride.
+
+# tokenizer にまだない語彙で実行するとエラーになる。
+text = "Hello, do you like tea?"
+# print(tokenizer.encode(text))
+# KeyError: 'Hello'
+# このことから、語彙を増やすために大規模で多様な訓練データセットを考慮する必要があることがわかる。
