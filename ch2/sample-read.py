@@ -183,3 +183,12 @@ text2 = "In the sunlit terraces of the palace."
 text = " <endoftext> ".join((text1, text2))
 print(text)
 # Hello, do you like tea? <endoftext> In the sunlit terraces of the palace.
+
+tokenizer = SimpleTokenizerV2(vocab)
+print(tokenizer.encode(text))
+# [1131, 5, 355, 1126, 628, 975, 10, 1131, 55, 988, 956, 984, 722, 988, 1131, 7]
+# <endoftext> が 1130, <unk> が 1131
+
+print(tokenizer.decode(tokenizer.encode(text)))
+# <unk>, do you like tea? <unk> In the sunlit terraces of the <unk>.
+# 「The Verdict」 に Hello, place は含まれていないため置き換わっている。
