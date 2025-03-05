@@ -138,3 +138,18 @@ text = "Hello, do you like tea?"
 # print(tokenizer.encode(text))
 # KeyError: 'Hello'
 # このことから、語彙を増やすために大規模で多様な訓練データセットを考慮する必要があることがわかる。
+
+all_tokens = sorted(list(set(preprocessed)))
+all_tokens.extend(["<[endoftext]>", "<unk>"])
+vocab = {token:integer for integer,token in enumerate(all_tokens)}
+
+print(len(vocab.items()))
+# 1132 # ここ以前（42 行目）の語彙のサイズは 1130 だったけど 2 つ追加された
+
+for i, item in enumerate(list(vocab.items())[-5:]):
+    print(item)
+# ('younger', 1127)
+# ('your', 1128)
+# ('yourself', 1129)
+# ('<[endoftext]>', 1130)
+# ('<unk>', 1131)
