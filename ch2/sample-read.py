@@ -153,3 +153,33 @@ for i, item in enumerate(list(vocab.items())[-5:]):
 # ('yourself', 1129)
 # ('<[endoftext]>', 1130)
 # ('<unk>', 1131)
+
+class SimpleTokenizerV2:
+    def __init__(self, vocab):
+        self.str_to_int = vocab# encode, decode メソッドでアクセスできるように語彙をクラス属性として格納
+        self.int_to_str = {i:s for s,i in vocab.items()}# トークンIDを元のテキストトークンにマッピングする逆引き語彙を作成
+    
+    # 入力テキストをトークンIDに変換
+    def encode(self, text):
+        preprocessed = re.split('([,.:;?_!"()\']|--|\s)', text)
+        preprocessed = [
+            item.strip() for item in preprocessed if item.strip()
+        ]
+        preprocessed = [# 未知の単語を<unk>トークンに置き換える
+            item if item in self.str_to_int
+            else "<unk>" for item in preprocessed
+        ]
+        ids = [self.str_to_int[s] for s in preprocessed]
+        return ids
+    
+    # トークンを変換してテキストに戻す
+    def decode(self, ids):
+        text = " ".join([self.int_to_str[i] for i in ids])
+        text = re.sub(r'\s+([,.:;?!"()\'])', r'\1', text)# 指定された句読点の前にあるスペースを削除
+        return text
+
+text1 = "Hello, do you like tea?"
+text2 = "In the sunlit terraces of the palace."
+text = " <endoftext> ".join((text1, text2))
+print(text)
+# Hello, do you like tea? <endoftext> In the sunlit terraces of the palace.
