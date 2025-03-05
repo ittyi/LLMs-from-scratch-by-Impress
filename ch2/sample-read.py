@@ -192,3 +192,10 @@ print(tokenizer.encode(text))
 print(tokenizer.decode(tokenizer.encode(text)))
 # <unk>, do you like tea? <unk> In the sunlit terraces of the <unk>.
 # 「The Verdict」 に Hello, place は含まれていないため置き換わっている。
+
+from importlib.metadata import version
+import tiktoken
+
+print("tiktoken version:", version("tiktoken"))
+# tiktoken version: 0.9.0
+
