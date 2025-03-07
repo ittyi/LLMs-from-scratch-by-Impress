@@ -238,3 +238,14 @@ for i in range(1, context_size+1):
 # [290, 4920] ----> 2241
 # [290, 4920, 2241] ----> 287
 # [290, 4920, 2241, 287] ----> 257
+
+# 上記のテキストに変換したバージョン
+for i in range(1, context_size+1):
+    context = enc_sample[:i]
+    desired = enc_sample[i]
+    print(tokenizer.decode(context), "---->", tokenizer.decode([desired]))
+#  and ---->  established
+#  and established ---->  himself
+#  and established himself ---->  in
+#  and established himself in ---->  a
+# LLM の訓練に利用できる入力変数と目的変数の組み合わせはこれで完成。
